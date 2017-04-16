@@ -1,0 +1,14 @@
+{
+    "name": "projector/accuwrite",
+    "description": "Projector Algo Base 3 course project",
+    "authors": [
+        {
+            "name": "Artem Dolmatov",
+            "email": "artem.kyiv@outlook.com"
+        }
+    ],
+    "require": {
+        "predis/predis": "^1.1",
+        "symfony/var-dumper": "^3.2"
+    }
+}
