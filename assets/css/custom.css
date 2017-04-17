@@ -23,7 +23,7 @@ input[type=button], input[type=submit], input[type=reset], .button {
 .button:hover {
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
-a.button:hover {
+a.button:hover, a.button:active, a.button:visited, a.button:focus {
     color: white; text-decoration: none;
 }
 
@@ -68,6 +68,16 @@ a.button:hover {
 }
 
 h3 small {
-    font-size: small;
+    font-size: 12px;
     text-transform: uppercase ;
+}
+
+#footer i:hover {
+    color: #4CAF50;
+}
+
+
+/*FROALA EDITOR*/
+.fr-box.fr-basic .fr-element {
+    min-height: 400px!important;
 }
