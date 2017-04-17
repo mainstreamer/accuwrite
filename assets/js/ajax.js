@@ -60,10 +60,9 @@ function buildTooltip(name, array) {
 
     $('span').on('click', function(){
         if ($(this).next().hasClass('tooltip')) {
-            $(this).next().hide();
+            $(this).next().remove();
         }
     });
-
 
     $('span').hover(function(){
         if ($(this).next().hasClass('tooltip')) {
