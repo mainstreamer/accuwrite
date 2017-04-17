@@ -56,11 +56,9 @@
 
   $('#spellcheck').click(function() {
 
-
   $('.tooltip').remove();
 
    var all = $(".fr-element p");
-
    var arr = [];
    var newString = [];
    var candidates = [];
@@ -83,46 +81,20 @@
      arr[j] = all[j].innerText.split(" ");
      for (var i = 0; i < arr[j].length; i++) {
 
+         if (arr[j][i] == '&nbsp;') {
+             continue;
+         }
        wrdCounter++;
-       newString += '<span id=word_'+wrdCounter+'  data-placement="bottom" data-toggle="tooltip" title="lalala">'+arr[j][i]+'</span>  ';
-       console.log(arr[j][i]);
+
+       newString += '<span id=word_'+wrdCounter+'  data-placement="bottom" data-toggle="tooltip">'+arr[j][i]+'</span>  ';
          candidates[wrdCounter]= {id: wrdCounter, value : arr[j][i]  };
     }
        all[j].innerHTML = newString;
 
    }
 
-      $('#word_3').tooltip({trigger:'manual',
-          template : '<div class="tooltip" role="tooltip"><div class="tooltip-arrow" id="3"></div><div class="tooltip-inner"></div></div>'
 
-      }).tooltip('show');
-      $('#word_3').after(' ');
-
-      $('div.tooltip-inner').append('<div class="tooltip-inner cross reject"><i class="fa fa-times"></i></div>');
-      $('div.tooltip-inner:not(.cross)').append('<div class="tooltip-inner approve cross"><i class="fa fa-check"></i></div>');
-
-
-      $('div.tooltip-inner.reject').on('click', function (){
-          $('div.tooltip-inner.reject').closest('.tooltip').hide();
-      });
-
-      $('div.tooltip-inner.approve').on('click', function (){
-          var newVal = $('div.tooltip-inner.approve').parent('.tooltip-inner')[0].innerText;
-//          $('#word_3').innerText = newVal;
-//          $('span#word_3')[0].innerText = newVal;
-          $('#word_3').text(newVal);
-//          $('div.tooltip-inner.approve').sibling('span').innerText = newVal;
-      });
-
-
-
-
-
-
-//for (var i in candidates) {
-//    console.log(i);
-//};
-//   goCheck(textToCheck);
+   goCheck(candidates);
   });
 </script>
 <script>

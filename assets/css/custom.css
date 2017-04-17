@@ -101,7 +101,7 @@ div.tooltip-inner {
     cursor: pointer;
 }
 
-.cross.approve i:hover {
+.cross.approve i:hover, .tooltip:hover {
     color: #4CAF50;
     cursor: pointer;
 }
