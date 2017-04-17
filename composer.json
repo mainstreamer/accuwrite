@@ -9,6 +9,7 @@
     ],
     "require": {
         "predis/predis": "^1.1",
-        "symfony/var-dumper": "^3.2"
+        "symfony/var-dumper": "^3.2",
+        "twig/twig": "^2.3"
     }
 }
