@@ -127,8 +127,8 @@
 </script>
 <script>
     $( document ).ready(function() {
-        $('body > div.jumbotron > div.well > div > div:nth-child(3) > a').hide();
-        setTimeout(function(){$('body > div.jumbotron > div.well > div > div:nth-child(3) > a').hide()},1000)
+       $("a:contains('Unlicensed Froala Editor')").remove();
+//        setInterval(function(){$('body > div.jumbotron > div.well > div > div:nth-child(3) > a').remove(); console.log('yes');},500)
     });
 
 
