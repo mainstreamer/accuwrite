@@ -58,12 +58,17 @@ function buildTooltip(name, array) {
     });
 
 
-    $('span').on('click', function(el){
+    $('span').on('click', function(){
         if ($(this).next().hasClass('tooltip')) {
             $(this).next().hide();
         }
-        // text(el.target.innerText);
-        // $(this).hide();
+    });
+
+
+    $('span').hover(function(){
+        if ($(this).next().hasClass('tooltip')) {
+            $(this).css('cursor', 'cell');
+        }
     });
 
 }
