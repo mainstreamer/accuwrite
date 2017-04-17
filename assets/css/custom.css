@@ -81,3 +81,27 @@ h3 small {
 .fr-box.fr-basic .fr-element {
     min-height: 400px!important;
 }
+
+div.tooltip {
+    z-index: 1!important;
+    position: absolute;
+}
+
+div.tooltip-inner {
+    float: right;
+}
+
+.cross {
+    padding : 0;
+    margin-left: 5px;
+    padding-top: 2px;
+}
+.cross i:hover {
+    color: #eb523a;
+    cursor: pointer;
+}
+
+.cross.approve i:hover {
+    color: #4CAF50;
+    cursor: pointer;
+}

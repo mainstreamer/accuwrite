@@ -7,7 +7,7 @@
  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
  <script   src="https://code.jquery.com/jquery-3.2.1.min.js"   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="   crossorigin="anonymous"></script>
  <!-- Latest compiled and minified JavaScript -->
- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
  <link rel="shortcut icon" href="../assets/img/favicon2.png" type="image/x-icon">
 <link rel="stylesheet" href="../assets/css/custom.css">
 <link rel="stylesheet" href="../assets/css/font-awesome.css">
@@ -19,6 +19,8 @@
  <!-- Include JS file. -->
  <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.5.1/js/froala_editor.min.js'></script>
  <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.5.1/js/plugins/char_counter.min.js'></script>
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
 </head>
 <body>
 
@@ -39,6 +41,7 @@
  </div>
 </div>
 
+
 <script>
  $(function() {
   $('textarea.froala-editor').froalaEditor({
@@ -47,8 +50,11 @@
 </script>
 <script src="../assets/js/ajax.js"></script>
 <script>
+
   $('#spellcheck').click(function() {
 
+
+  $('.tooltip').remove();
 
    var all = $(".fr-element p");
 
@@ -58,11 +64,13 @@
    var wrdCounter = 0;
 
 //iterate over P
+
    for (var q = 0; q < all.length; q++)
    {
      newString = '';
+    all[q].innerHTML = all[q].innerHTML.replace('&nbsp;',' ')
      all[q].innerHTML = all[q].innerText;
-     all[q].innerHTML = all[q].innerHTML.replace('&nbsp;',' ')
+
    }
 
 
@@ -73,54 +81,48 @@
      for (var i = 0; i < arr[j].length; i++) {
 
        wrdCounter++;
-       newString += '<span id=word_'+wrdCounter+'>'+arr[j][i]+'</span> ';
-       candidates['word_'+wrdCounter] = arr[j][i];
+       newString += '<span id=word_'+wrdCounter+'  data-placement="bottom" data-toggle="tooltip" title="lalala">'+arr[j][i]+'</span>  ';
+       console.log(arr[j][i]);
+         candidates[wrdCounter]= {id: wrdCounter, value : arr[j][i]  };
     }
        all[j].innerHTML = newString;
 
    }
 
+      $('#word_3').tooltip({trigger:'manual',
+          template : '<div class="tooltip" role="tooltip"><div class="tooltip-arrow" id="3"></div><div class="tooltip-inner"></div></div>'
+
+      }).tooltip('show');
+      $('#word_3').after(' ');
+
+      $('div.tooltip-inner').append('<div class="tooltip-inner cross reject"><i class="fa fa-times"></i></div>');
+      $('div.tooltip-inner:not(.cross)').append('<div class="tooltip-inner approve cross"><i class="fa fa-check"></i></div>');
+
+
+      $('div.tooltip-inner.reject').on('click', function (){
+          $('div.tooltip-inner.reject').closest('.tooltip').hide();
+      });
+
+      $('div.tooltip-inner.approve').on('click', function (){
+          var newVal = $('div.tooltip-inner.approve').parent('.tooltip-inner')[0].innerText;
+//          $('#word_3').innerText = newVal;
+//          $('span#word_3')[0].innerText = newVal;
+          $('#word_3').text(newVal);
+//          $('div.tooltip-inner.approve').sibling('span').innerText = newVal;
+      });
 
 
 
 
 
 
-
-
-
-
-//   for (var el in all) {
-//    console.log (all[0].innerText);
-//    console.log (candidates);
-//
-//    all[0].innerHTML = newString;
-//   }
-/*
-   var textToCheck = $('#text').val();
-
-   var arr = textToCheck.split(" ");
-//   var newString = [];
-//   for (var i = 0; i < arr.length; i++) {
-//    newString += '<span>'+arr[i]+'</span> ';
-//   }
-   $('#text').val(newString);*/
-//
-//   t = '<span>'+t+'</span>';
-//   $( "#spellcheck" ).value = t;
-
-//   alert($( "#spellcheck" ).value);
-
-
-//   console.log($('#spellcheck').children);
-//   each(
-//           function (data) {
-//              console.log(data);
-//           }
-//   );
-
+      console.log(candidates[4]);
+//for (var i in candidates) {
+//    console.log(i);
+//};
 //   goCheck(textToCheck);
   });
 </script>
+
 </body>
 </html>
