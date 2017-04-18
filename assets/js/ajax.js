@@ -24,7 +24,7 @@ function suggest(array) {
 
     for (var name in array) {
         // console.log('id : '+ name+' suggestion : '+array[name]['value']);
-        console.log($('#word_'+name).title = array[name]['value']);
+        console.log($('#word_'+array[name]['id']).title = array[name]['value']);
         buildTooltip(name, array);
 
 
@@ -35,12 +35,12 @@ function suggest(array) {
 
 
 function buildTooltip(name, array) {
-
-    $('#word_'+name).tooltip({trigger:'manual',
-        title : array[name]['value'],
+    console.log('#word_'+name, 'ZNACHENIE: '+array[name]['value']);
+    $('#word_'+array[name]['id']).tooltip({trigger:'manual',
+        title : array[name]['value']
         // container : '#word_'+name
     }).tooltip('show');
-    $('#word_'+name).after(' ');
+    $('#word_'+array[name]['id']).after(' ');
 
 
     // $('#word_'+name).next()[0].append("<div class='tooltip-inner'>LAL</div>");
