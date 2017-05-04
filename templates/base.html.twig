@@ -1,111 +1,90 @@
 <html>
-<head>
-<title>Accuwrite</title>
- <!-- Latest compiled and minified CSS -->
- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
- <!-- Optional theme -->
- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
- <script   src="https://code.jquery.com/jquery-3.2.1.min.js"   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="   crossorigin="anonymous"></script>
- <!-- Latest compiled and minified JavaScript -->
+    <head>
+        <title>Accuwrite</title>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+        <script   src="https://code.jquery.com/jquery-3.2.1.min.js"   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="   crossorigin="anonymous"></script>
+        <!-- Latest compiled and minified JavaScript -->
 
- <link rel="shortcut icon" href="../assets/img/favicon2.png" type="image/x-icon">
-<link rel="stylesheet" href="../assets/css/custom.css">
-<link rel="stylesheet" href="../assets/css/font-awesome.css">
+        <link rel="shortcut icon" href="../assets/img/favicon2.png" type="image/x-icon">
+        <link rel="stylesheet" href="../assets/css/custom.css">
+        <link rel="stylesheet" href="../assets/css/font-awesome.css">
 
- <link href='https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.5.1/css/froala_editor.min.css' rel='stylesheet' type='text/css' />
- <link href='https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.5.1/css/froala_style.min.css' rel='stylesheet' type='text/css' />
- <link href='https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.5.1/css/plugins/char_counter.min.css' rel='stylesheet' type='text/css' />
+        <link href='https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.5.1/css/froala_editor.min.css' rel='stylesheet' type='text/css' />
+        <link href='https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.5.1/css/froala_style.min.css' rel='stylesheet' type='text/css' />
+        <link href='https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.5.1/css/plugins/char_counter.min.css' rel='stylesheet' type='text/css' />
 
- <!-- Include JS file. -->
- {#<script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.5.1/js/froala_editor.min.js'></script>#}
- <script type='text/javascript' src='../assets/js/froala_editor.min.js'></script>
- <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.5.1/js/plugins/char_counter.min.js'></script>
- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <!-- Include JS file. -->
+        {#<script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.5.1/js/froala_editor.min.js'></script>#}
+        <script type='text/javascript' src='../assets/js/froala_editor.min.js'></script>
+        <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.5.1/js/plugins/char_counter.min.js'></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-</head>
-<body>
+    </head>
+    <body>
+        <div class="jumbotron">
+            <div class="page-header">
+                <h3>Accuwrite <small> handy spellchecking</small></h3>
+            </div>
+            <div class="well">
+                <textarea id="text" class="froala-editor"></textarea>
+            </div>
+            <p><a class="button" id="spellcheck" href="#" role="button">Check</a></p>
+        </div>
 
-<div class="jumbotron">
- <div class="page-header">
-  <h3>Accuwrite <small> handy spellchecking</small></h3>
- </div>
- <div class="well">
-  <textarea id="text" class="froala-editor"></textarea>
- </div>
- <p><a class="button" id="spellcheck" href="#" role="button">Check</a></p>
-</div>
+        <div id="footer">
+            <div class="container">
+                <p><div><a href="https://github.com/mainstreamer/accuwrite"><i class="fa fa-github"></i></a></div>
+                <div class="copyright">Copyright © 2017</div></p>
+            </div>
+        </div>
+        <script type='text/javascript' src="../assets/js/ajax.js"></script>
+        <script type='text/javascript'>
+            $(document).ready(function () {
+                $("a:contains('Unlicensed Froala Editor')").remove();
+            });
+            
+            $(function () {
+                $('textarea.froala-editor').froalaEditor({
+                })
+            });
+            $('.show-placeholder').next().hide();
+            
+            $('#spellcheck').click(function () {
+                $('.tooltip').remove();
+                var all = $(".fr-element p");
+                var arr = [];
+                var newString = [];
+                var candidates = [];
+                var wrdCounter = 0;
 
-<div id="footer">
- <div class="container">
-  <p><div><a href="https://github.com/mainstreamer/accuwrite"><i class="fa fa-github"></i></a></div>
-  <div class="copyright">Copyright © 2017</div></p>
- </div>
-</div>
+                //iterate over P
+                for (var q = 0; q < all.length; q++) {
+                    newString = '';
+                    all[q].innerHTML = all[q].innerHTML.replace('&nbsp;', ' ')
+                    all[q].innerHTML = all[q].innerText;
+                }
 
+                for (var j = 0; j < all.length; j++) {
+                    newString = '';
+                    arr[j] = all[j].innerText.split(" ");
+                    for (var i = 0; i < arr[j].length; i++) {
 
-<script>
- $(function() {
-  $('textarea.froala-editor').froalaEditor({
-  } )
- });
+                        if (arr[j][i] == '&nbsp;') {
+                            continue;
+                        }
+                        wrdCounter++;
 
-    $('.show-placeholder').next().hide();
-</script>
-<script src="../assets/js/ajax.js"></script>
-<script>
+                        newString += '<span id=word_' + wrdCounter + '  data-placement="bottom" data-toggle="tooltip">' + arr[j][i] + '</span>  ';
+                        candidates[wrdCounter-1] = {id: wrdCounter, value: arr[j][i]};
+                    }
+                    all[j].innerHTML = newString;
+                }
 
-  $('#spellcheck').click(function() {
-
-  $('.tooltip').remove();
-
-   var all = $(".fr-element p");
-   var arr = [];
-   var newString = [];
-   var candidates = [];
-   var wrdCounter = 0;
-
-//iterate over P
-
-   for (var q = 0; q < all.length; q++)
-   {
-     newString = '';
-    all[q].innerHTML = all[q].innerHTML.replace('&nbsp;',' ')
-     all[q].innerHTML = all[q].innerText;
-
-   }
-
-
-   for (var j = 0; j < all.length; j++)
-   {
-     newString = '';
-     arr[j] = all[j].innerText.split(" ");
-     for (var i = 0; i < arr[j].length; i++) {
-
-         if (arr[j][i] == '&nbsp;') {
-             continue;
-         }
-       wrdCounter++;
-
-       newString += '<span id=word_'+wrdCounter+'  data-placement="bottom" data-toggle="tooltip">'+arr[j][i]+'</span>  ';
-         candidates[wrdCounter]= {id: wrdCounter, value : arr[j][i]  };
-    }
-       all[j].innerHTML = newString;
-
-   }
-
-
-   goCheck(candidates);
-  });
-</script>
-<script>
-    $( document ).ready(function() {
-       $("a:contains('Unlicensed Froala Editor')").remove();
-//        setInterval(function(){$('body > div.jumbotron > div.well > div > div:nth-child(3) > a').remove(); console.log('yes');},500)
-    });
-
-
-
-
-</script>
-</body>
+                goCheck(candidates);
+            });
+        </script>
+    </body>
 </html>
