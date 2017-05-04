@@ -20,18 +20,8 @@ catch (Exception $e) {
     die($e->getMessage());
 }
 
-// sets message to contian "Hello world"
-//$redis->set('message', 'Hello world');
-
-// gets the value of message
-$value = $redis->get('message');
-
 $loader = new Twig_Loader_Filesystem('templates');
 $twig = new Twig_Environment($loader);
 
-$data = ($redis->exists('message')) ? "Oui" : "please populate the message key";
-
-echo $twig->render('base.html.twig', ['data' => $data]);
-
-//print($value);
+echo $twig->render('base.html.twig');
 ?>

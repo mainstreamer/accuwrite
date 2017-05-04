@@ -1,5 +1,8 @@
 <?php
 
+require __DIR__ . '/vendor/autoload.php';
+
+$redis = new Predis\Client();
 // $input = 'fas afs a asf as f';
 //echo json_encode(['fas' => 'fast']);
 //echo json_encode(explode(" ",$_POST['text']));
