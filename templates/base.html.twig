@@ -42,14 +42,16 @@
         </div>
         <script type='text/javascript' src="../assets/js/ajax.js"></script>
         <script type='text/javascript'>
-            $(document).ready(function () {
-                $("a:contains('Unlicensed Froala Editor')").remove();
-            });
             
             $(function () {
                 $('textarea.froala-editor').froalaEditor({
                 })
             });
+
+	     $(document).ready(function () {
+                $("a:contains('Unlicensed Froala Editor')").remove();
+            });
+
             $('.show-placeholder').next().hide();
             
             $('#spellcheck').click(function () {
