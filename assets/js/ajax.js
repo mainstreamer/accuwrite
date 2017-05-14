@@ -1,4 +1,7 @@
 function goCheck(text) {
+    // console.log('privet');
+    // console.log(JSON.parse({"id":"1","value": \u0442\u0440\u0438\u043d\u0456\u0442\u0440\u043e\u0442\u043e\u043b\u0443\u043e\u043b}));
+    // console.log('privet2');
     $.ajax({
         url: "spellchecker.php",
         method: "POST",
@@ -8,9 +11,13 @@ function goCheck(text) {
         }
     }).done(function(data) {
         $( this ).addClass( "done" );
+
         console.log('ajax successful');
         console.log(data);
         var f =  JSON.parse(data);
+        console.log(f);
+        console.log('TIME:'+f[f.length-1]['total']+' WORDS CHECKED:'+f[f.length-1]['words']);
+
         suggest(f);
     }).fail(
         function() {
@@ -24,8 +31,14 @@ function suggest(array) {
 
     for (var name in array) {
         // console.log('id : '+ name+' suggestion : '+array[name]['value']);
-        console.log($('#word_'+array[name]['id']).title = array[name]['value']);
-        buildTooltip(name, array);
+        // console.log($('#word_'+array[name]['id']).title = array[name]['value']);
+        // console.log('value is...');
+        // console.log(array[name]['value']);
+        if (array[name]['value'] == 'underline') {
+            $('#word_'+array[name]['id']).css({"text-decoration":"underline", "text-decoration-color":"red"});
+        } else {
+            buildTooltip(name, array);
+        }
 
 
 
@@ -35,22 +48,14 @@ function suggest(array) {
 
 
 function buildTooltip(name, array) {
-    console.log('#word_'+name, 'ZNACHENIE: '+array[name]['value']);
+
     $('#word_'+array[name]['id']).tooltip({trigger:'manual',
         title : array[name]['value']
         // container : '#word_'+name
     }).tooltip('show');
+
     $('#word_'+array[name]['id']).after(' ');
 
-
-    // $('#word_'+name).next()[0].append("<div class='tooltip-inner'>LAL</div>");
-    // $('div.tooltip-inner:not(.cross)').append('<div class="tooltip-inner cross reject" pid="'+name+'"><i class="fa fa-times"></i></div>');
-
-    // $('div.tooltip-inner:not(.cross)').append('<div class="tooltip-inner approve cross"><i class="fa fa-check"></i></div>');
-
-    // $('div.reject').on('click', function (){
-    //     $('div.reject').closest('.tooltip').hide();
-    // });
 
     $('.tooltip').on('click', function(el){
         $(this).prev().text(el.target.innerText);

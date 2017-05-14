@@ -66,7 +66,7 @@
                 for (var q = 0; q < all.length; q++) {
                     newString = '';
                     all[q].innerHTML = all[q].innerHTML.replace('&nbsp;', ' ')
-                    all[q].innerHTML = all[q].innerText;
+//                    all[q].innerHTML = all[q].innerText;
                 }
 
                 for (var j = 0; j < all.length; j++) {
@@ -74,7 +74,7 @@
                     arr[j] = all[j].innerText.split(" ");
                     for (var i = 0; i < arr[j].length; i++) {
 
-                        if (arr[j][i] == '&nbsp;') {
+                        if (arr[j][i] == '&nbsp;' || arr[j][i] == ' ') {
                             continue;
                         }
                         wrdCounter++;

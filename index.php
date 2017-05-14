@@ -3,9 +3,11 @@
 require __DIR__ . '/vendor/autoload.php';
 
 try {
-    $redis = new Predis\Client(["scheme" => "tcp",
+        $redis = new Predis\Client(
+            ["scheme" => "tcp",
             "host" => "127.0.0.1",
-            "port" => 6379]);
+            "port" => 6379]
+        );
 
     // This connection is for a remote server
     /*
@@ -23,5 +25,4 @@ catch (Exception $e) {
 $loader = new Twig_Loader_Filesystem('templates');
 $twig = new Twig_Environment($loader);
 
-echo $twig->render('base.html.twig');
-?>
+echo $twig->render('base.html.twig');   
