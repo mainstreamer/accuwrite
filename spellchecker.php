@@ -88,6 +88,27 @@ class Spellchecker
         return $value;
     }
 
+    private function checkSubstitutions($word)
+    {
+        $value = null;
+        foreach ($word as $key => $letter) {
+
+            foreach ($this->alphabet as $let) {
+
+                $tmpWord = $word; // сopy array of letters to tmp var
+                $tmpWord[$key] = $let;
+                $tmpWord = implode($tmpWord);
+
+                if ($tmpWord!=$word && $this->redis->exists($tmpWord)) {
+                    $value = $tmpWord;
+                    break 2;
+                }
+            }
+        }
+
+        return $value;
+    }
+
     public function processInput($input)
     {
         $totaltime = microtime(true); //benchmark
@@ -98,6 +119,7 @@ class Spellchecker
             if ($value == '-' || empty($value)) {continue;} // ignore hyphens that are not between words
             if (!$this->redis->exists($value)) {
                 $value = $this->splitWord($value);
+
                 $response = $this->checkTranspositions($value);
 
                 if (!$response) {
@@ -106,11 +128,12 @@ class Spellchecker
                 if (!$response) {
                     $response = $this->checkInsertions($value);
                 }
-                /*if (!$response) {
+                if (!$response) {
                     $response = $this->checkSubstitutions($value);
-                }*/
+                }
 
                 $response = $response ? $response : 'underline';
+
                 $this->response[] = ['id' => $array['id'], 'value' => $response, 'time' => microtime(true) - $time];
             }
         }
