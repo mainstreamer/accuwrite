@@ -109,3 +109,10 @@ div.tooltip-inner {
 /*span:hover {*/
     /*cursor : cell;*/
 /*}*/
+
+.fr-toolbar {
+    display: none;
+}
+.fr-box {
+    border-top: 10px solid black!important;
+}
