@@ -7,19 +7,19 @@ class Spellchecker
     
     private $alphabet = ["а","б","в","г","д","е","є","ж","з","і","ї","й","и","к","л","м","н","о","п","р","с","т","у","ф","х","ц","ч","ш","щ","ю","я","'"];
     
-    private $ignored = [',','.','"','1','2','3','4','5','6','7','8','9','0','+','_','=',':','(',')',']','[',';','—','«','»'];
+    private $ignored = [',','.','"','1','2','3','4','5','6','7','8','9','0','+','_','=',':','(',')',']','[',';','—','«','»','?'];
 
     private $candidates = [];
     
     private $response = [];
     
 
-    public function __construct($redis)
+    public function __construct(Predis\Client $redis)
     {
         $this->redis=$redis;
     }
     
-    private function checkDeletions($word)
+    private function checkDeletions(array $word) : ?string
     {
         $value = null;
         foreach ($word as $key => $letter) {
@@ -36,7 +36,7 @@ class Spellchecker
         return $value;
     }
     
-    private function checkInsertions($word)
+    private function checkInsertions (array $word) : ?string
     {
         $value = null;
         foreach ($word as $key => $letter) {
@@ -69,7 +69,7 @@ class Spellchecker
         return $value;
     }
     
-    private function checkTranspositions($word)
+    private function checkTranspositions (array $word) : ?string
     {
         $value = null;
         foreach ($word as $key => $letter) {
@@ -88,7 +88,7 @@ class Spellchecker
         return $value;
     }
 
-    private function checkSubstitutions($word)
+    private function checkSubstitutions (array $word): ?string
     {
         $value = null;
         foreach ($word as $key => $letter) {
@@ -109,7 +109,7 @@ class Spellchecker
         return $value;
     }
 
-    public function processInput($input)
+    public function processInput (array $input) : void
     {
         $totaltime = microtime(true); //benchmark
 
@@ -132,7 +132,7 @@ class Spellchecker
                     $response = $this->checkSubstitutions($value);
                 }
 
-                $response = $response ? $response : 'underline';
+                $response = $response ?? 'underline';
 
                 $this->response[] = ['id' => $array['id'], 'value' => $response, 'time' => microtime(true) - $time];
             }
@@ -143,7 +143,7 @@ class Spellchecker
         $this->output();
     }
 
-    private function sanitize(array $data)
+    private function sanitize (array $data) : ?string
     {
         $value = mb_strtolower($data['value']);
         $value = str_replace($this->ignored,'',$value);
@@ -151,12 +151,12 @@ class Spellchecker
         return $value;
     }
 
-    private function splitWord(string $word)
+    private function splitWord  (string $word) : array
     {
         return preg_split('//u',$word,-1,PREG_SPLIT_NO_EMPTY);
     }
 
-    private function output($response = null)
+    private function output (array $response = null): void
     {
         print json_encode($this->response);
     }
