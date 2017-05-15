@@ -123,14 +123,17 @@ class Spellchecker
                 $response = $this->checkTranspositions($value);
 
                 if (!$response) {
+                    $response = $this->checkSubstitutions($value);
+                }
+
+                if (!$response) {
                     $response = $this->checkDeletions($value);
                 }
+
                 if (!$response) {
                     $response = $this->checkInsertions($value);
                 }
-                if (!$response) {
-                    $response = $this->checkSubstitutions($value);
-                }
+
 
                 $response = $response ?? 'underline';
 
@@ -140,7 +143,7 @@ class Spellchecker
 
         // some statistics
         $this->response[] = ['total' => microtime(true)-$totaltime, 'words' => count($_POST['text'])];
-        $this->output();    
+        $this->output();
     }
 
     private function sanitize (array $data) : ?string
