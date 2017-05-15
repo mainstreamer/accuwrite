@@ -140,7 +140,7 @@ class Spellchecker
 
         // some statistics
         $this->response[] = ['total' => microtime(true)-$totaltime, 'words' => count($_POST['text'])];
-        $this->output();
+        $this->output();    
     }
 
     private function sanitize (array $data) : ?string

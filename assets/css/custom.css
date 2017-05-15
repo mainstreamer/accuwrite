@@ -36,9 +36,10 @@ a.button:hover, a.button:active, a.button:visited, a.button:focus {
 #footer{
     color: white;
     background-color: #383838 !important;
-    height: 150px;
-    padding: 30px;
+    height: 100px;
+    padding: 5px;
     padding-left: 0px;
+    margin-bottom: 0px;
 }
 
 #footer i {
@@ -122,11 +123,12 @@ div.tooltip-inner {
 }
 
 #footer {
-    position: absolute;
+    /*position: absolute;*/
     right: 0;
     bottom: 0;
     left: 0;
-    padding: 1rem;
-    background-color: #efefef;
+
+    /*padding: 1rem;*/
+    /*background-color: #efefef;*/
     text-align: center;
 }
