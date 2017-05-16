@@ -48,7 +48,7 @@ class Spellchecker
 
                 if ($this->redis->exists($tmpWord)) {
                     $value = $tmpWord;
-                    break;
+                    break 2;
                 }
             }
 
@@ -61,7 +61,7 @@ class Spellchecker
 
                     if ($this->redis->exists($tmpWord)) {
                         $value = $tmpWord;
-                        break;
+                        break 2;
                     }
                 }
             }
