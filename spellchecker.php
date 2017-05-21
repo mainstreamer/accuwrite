@@ -6,10 +6,15 @@ require __DIR__ . '/Entity/ArrayManager.php';
 require __DIR__ . '/Entity/Spellchecker.php';
 require __DIR__ . '/Entity/TrieManager.php';
 
-//$redis = unserialize(file_get_contents('triedb'));
-//$redis = new Predis\Client();
 
-$redis = new ArrayManager();
+//$engine = new Predis\Client();
+$engine = new ArrayManager();
 
-$spellchecker = new Spellchecker($redis);
+//if (file_exists('triedb')) {
+//    $engine = unserialize(file_get_contents('triedb'));
+//} else {
+//    $engine = new TrieManager();
+//}
+
+$spellchecker = new Spellchecker($engine);
 $spellchecker->processInput($_POST['text']);

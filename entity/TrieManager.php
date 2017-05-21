@@ -8,6 +8,16 @@ class TrieManager
 
     public function __construct()
     {
+        if (!file_exists('triedb') && file_exists('words.txt')) {
+
+            $array = file('words.txt', FILE_IGNORE_NEW_LINES);
+
+            foreach ($array as $word) {
+                $this->addWord($word);
+            }
+            
+            $this->save();
+        }
     }
 
     private function splitWord (string $word) : array
@@ -47,6 +57,7 @@ class TrieManager
         {
             if (!isset($currentNode[$arrayOfLetters[$i]])) {
                 return false;
+                
             } elseif ($i == count($arrayOfLetters)-1) {
 
                 if ($currentNode[$arrayOfLetters[$i]]['valid'] == true) {
@@ -65,7 +76,7 @@ class TrieManager
         return $this->searchWord($word);
     }
 
-    public function save(string $location = 'trie')
+    public function save(string $location = 'triedb')
     {
         file_put_contents("$location", serialize($this));
     }
