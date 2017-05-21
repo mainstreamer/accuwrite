@@ -2,6 +2,7 @@
 
 require __DIR__ . '/vendor/autoload.php';
 
+
 try {
         $redis = new Predis\Client(
             ["scheme" => "tcp",
