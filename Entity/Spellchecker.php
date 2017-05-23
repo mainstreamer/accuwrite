@@ -1,10 +1,11 @@
 <?php
 
 
-
 class Spellchecker
 {
     private $redis;
+
+    private $frequency;
 
     private $alphabet = ["а","б","в","г","д","е","є","ж","з","і","ї","й","и","к","л","м","н","о","п","р","с","т","у","ф","х","ц","ч","ш","щ","ю","я","'"];
 
@@ -17,29 +18,38 @@ class Spellchecker
 
     public function __construct($redis)
     {
+        if (file_exists('frequency')) {
+            $this->frequency = unserialize(file_get_contents('frequency'));
+        }
+
         $this->redis=$redis;
     }
 
-    private function checkDeletions(array $word) : ?string
+    private function checkDeletions(array $word) : ?array
     {
         $value = null;
+        $candidates = [];
         foreach ($word as $key => $letter) {
             $tmpWord = $word; // сopy array of letters to tmp var
             unset($tmpWord[$key]); // swap previous and current letters
             $tmpWord = implode($tmpWord);
 
             if ($this->redis->exists($tmpWord)) {
-                $value = $tmpWord;
-                break;
+                $candidates[] = $tmpWord;
+//                $value = $tmpWord;
+//                break;
             }
         }
 
-        return $value;
+
+//        return $value;
+        return $candidates;
     }
 
-    private function checkInsertions (array $word) : ?string
+    private function checkInsertions (array $word) : ?array
     {
         $value = null;
+        $candidates = [];
         foreach ($word as $key => $letter) {
             foreach ($this->alphabet as $let) {
 
@@ -48,8 +58,10 @@ class Spellchecker
                 $tmpWord = implode($tmpWord);
 
                 if ($this->redis->exists($tmpWord)) {
-                    $value = $tmpWord;
-                    break 2;
+
+                    $candidates[] = $tmpWord;
+//                    $value = $tmpWord;
+//                    break 2;
                 }
             }
 
@@ -61,18 +73,22 @@ class Spellchecker
                     $tmpWord = implode($tmpWord);
 
                     if ($this->redis->exists($tmpWord)) {
-                        $value = $tmpWord;
-                        break 2;
+                        
+                        $candidates[] = $tmpWord;
+//                        $value = $tmpWord;
+//                        break 2;
                     }
                 }
             }
         }
-        return $value;
+//        return $value;
+        return $candidates;
     }
     
-    private function checkTranspositions (array $word) : ?string
+    private function checkTranspositions (array $word) : ?array
     {
         $value = null;
+        $candidates = [];
         foreach ($word as $key => $letter) {
             if ($key > 0) {
                 $tmpWord = $word; // сopy array of letters to tmp var
@@ -81,17 +97,20 @@ class Spellchecker
                 $tmpWord[$key-1] = $tmp;
                 $tmpWord = implode($tmpWord);
                 if ($this->redis->exists($tmpWord)) {
+                    $candidates[] = $tmpWord;
                     $value = $tmpWord;
                 }
             }
         }
 
-        return $value;
+//        return $value;
+        return $candidates;
     }
 
-    private function checkSubstitutions (array $word): ?string
+    private function checkSubstitutions (array $word): ?array
     {
         $value = null;
+        $candidates = [];
         foreach ($word as $key => $letter) {
 
             foreach ($this->alphabet as $let) {
@@ -101,13 +120,15 @@ class Spellchecker
                 $tmpWord = implode($tmpWord);
 
                 if ($tmpWord!=$word && $this->redis->exists($tmpWord)) {
-                    $value = $tmpWord;
-                    break 2;
+//                    $value = $tmpWord;
+//                    break 2;
+                    $candidates[] = $tmpWord;
                 }
             }
         }
 
-        return $value;
+        return $candidates;
+//        return $value;
     }
 
     public function processInput (array $input) : void
@@ -120,22 +141,30 @@ class Spellchecker
         if ($value == '-' || empty($value)) {continue;} // ignore hyphens that are not between words
             if (!$this->redis->exists($value)) {
                 $value = $this->splitWord($value);
-    
-                $response = $this->checkTranspositions($value);
-    
+
+
+                $response = $this->distance1($value);
                 if (!$response) {
-                    $response = $this->checkSubstitutions($value);
+                    $response = $this->distance2($value);
+
                 }
-    
-                if (!$response) {
-                    $response = $this->checkDeletions($value);
-                }
-    
-                if (!$response) {
-                    $response = $this->checkInsertions($value);
-                }
-    
-    
+
+//                $response = $this->checkDeletions($value);
+//
+//                if (!$response) {
+//                    $response = $this->checkInsertions($value);
+//                }
+//
+//                if (!$response) {
+//                    $response = $this->checkTranspositions($value);
+//                }
+//
+//
+//                if (!$response) {
+//                    $response = $this->checkSubstitutions($value);
+//                }
+//
+                
                 $response = $response ?? 'underline';
     
                 $this->response[] = ['id' => $array['id'], 'value' => $response, 'time' => microtime(true) - $time];
@@ -145,6 +174,35 @@ class Spellchecker
         // some statistics
         $this->response[] = ['total' => microtime(true)-$totaltime, 'words' => count($_POST['text'])];
         $this->output();
+    }
+
+    private function getTop(array $array):string
+    {
+        $top = ['value' => '', 'rate' => 0];
+        foreach ($array as $word)
+        {
+            if (isset($this->frequency[$word]) && $this->frequency[$word] > $top['rate'])
+            {
+                $top['value'] = $word;
+                $top['rate'] = $this->frequency[$word];
+            }
+        }
+
+        return $top['value'];
+    }
+
+    private function distance1($word)
+    {
+        $candidates = array_unique(array_merge($this->checkDeletions($word), $this->checkInsertions($word)));
+        
+        return $this->getTop($candidates);
+    }
+
+    private function distance2($word)
+    {
+        $candidates = array_unique(array_merge($this->checkSubstitutions($word), $this->checkTranspositions($word)));
+    
+        return $this->getTop($candidates);
     }
 
     private function sanitize (array $data) : ?string
