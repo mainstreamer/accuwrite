@@ -1,12 +1,24 @@
-<?php
+<?php declare(strict_types=1);
 
+/**
+ * Class TrieManager
+ */
 
 class TrieManager
 {
+    /**
+     * @var array|mixed
+     */
     private $frequency = [];
-    
+
+    /**
+     * @var array
+     */
     public $trie = [];
 
+    /**
+     * TrieManager constructor.
+     */
     public function __construct()
     {
         
@@ -26,33 +38,41 @@ class TrieManager
         }
     }
 
+    /**
+     * @param string $prefix
+     * @return array
+     */
     public function getNodeByPrefix(string $prefix) : array
     {
         $node = $this->trie;
         $prefix = $this->splitWord($prefix);
 
-        for ($i=0; $i < count($prefix); $i++)
-        {
+        for ($i=0; $i<count($prefix); $i++) {
             $node = $node[$prefix[$i]];
         }
         
         return $node;
     }
 
-    private function splitWord (string $word) : array
+    /**
+     * @param string $word
+     * @return array
+     */
+    private function splitWord(string $word) : array
     {
-        return preg_split('//u',$word,-1,PREG_SPLIT_NO_EMPTY);
+        return preg_split('//u', $word, -1, PREG_SPLIT_NO_EMPTY);
     }
 
-    public function addWord(string $word)
+    /**
+     * @param string $word
+     */
+    public function addWord(string $word) : void
     {
         $word = $this->purify($word);
         $arrayOfLetters = $this->splitWord($word);
-
         $currentNode = &$this->trie;
 
-        for ($i = 0; $i < count($arrayOfLetters); $i++)
-        {
+        for ($i = 0; $i<count($arrayOfLetters); $i++) {
             if (!isset($currentNode[$arrayOfLetters[$i]])) {
                 $currentNode[$arrayOfLetters[$i]]['valid'] = false;
             }
@@ -64,56 +84,71 @@ class TrieManager
         }
     }
 
-    public function searchWord(string $word)
+    /**
+     * @param string $word
+     * @return bool
+     */
+    public function searchWord(string $word) : bool
     {
         $word = $this->purify($word);
         $arrayOfLetters = $this->splitWord($word);
-
         $currentNode = &$this->trie;
 
-        for ($i = 0; $i < count($arrayOfLetters); $i++)
-        {
+        for ($i = 0; $i < count($arrayOfLetters); $i++) {
             if (!isset($currentNode[$arrayOfLetters[$i]])) {
+
                 return false;
-                
             } elseif ($i == count($arrayOfLetters)-1) {
 
                 if ($currentNode[$arrayOfLetters[$i]]['valid'] == true) {
+
                     return true;
                 } else {
+
                     return false;
                 }
             }
 
             $currentNode = &$currentNode[$arrayOfLetters[$i]];
         }
+
+        return false;
     }
 
-    public function exists($word)
+    /**
+     * @param $word
+     * @return bool
+     */
+    public function exists($word) : bool
     {
         return $this->searchWord($word);
     }
 
-    public function arrayToString(array $array): string
+    /**
+     * @param array $array
+     * @return string
+     */
+    public function arrayToString(array $array) : string
     {
         $string = '';
-        foreach ($array as $letter)
-        {
+        foreach ($array as $letter) {
             $string.=$letter;
         }
         
         return $string;
     }
 
-    
-    public function getValidChildren(string $prefix): array
+
+    /**
+     * @param string $prefix
+     * @return array
+     */
+    public function getValidChildren(string $prefix) : array
     {
         $node = $this->getNodeByPrefix($prefix);
         $response = [];
-        foreach ($node as $letter => $subnode)
-        {
+        foreach ($node as $letter => $subnode) {
             if ($subnode['valid']) {
-//                $response[] = $subnode;
                 $response[] = $prefix.$letter;
             }
         }
@@ -121,47 +156,54 @@ class TrieManager
         return $response;
     }
 
-    public function hasChild($node, $child)
+    /**
+     * @param $node
+     * @param $child
+     * @return bool
+     */
+    public function hasChild($node, $child) : bool
     {
-
         $child = $this->splitWord($child);
-        for ($i=0; $i < count($child); $i++)
-        {
-            
-            if (isset($node[$child[$i]]))
-            {
+        for ($i=0; $i < count($child); $i++) {
+            if (isset($node[$child[$i]])) {
                 $node = $node[$child[$i]];
-            } else { return false;}
-
+            } else {
+                return false;
+            }
             if ($i == count($child)-1 ) {
 
                 if ($node['valid']) {
                     return true;
                 }
             }
-
         }
 
         return false;
     }
 
-    public function hasChildren(array $node):bool
+    /**
+     * @param array $node
+     * @return bool
+     */
+    public function hasChildren(array $node) : bool
     {
         return count($node) > 1 ? true : false;
 
     }
 
-    public function getPotentiallyValidChildren(string $prefix): array
+    /**
+     * @param string $prefix
+     * @return array
+     */
+    public function getPotentiallyValidChildren(string $prefix) : array
     {
         $node = $this->getNodeByPrefix($prefix);
-
         $response = [];
-        foreach ($node as $letter => $subnode)
-        {
-            if ($letter == 'valid') { continue; }
-
+        foreach ($node as $letter => $subnode) {
+            if ($letter == 'valid') {
+                continue;
+            }
             if ($this->hasChildren($subnode)) {
-//                $response[$prefix.$letter] = $subnode;
                 $response[] = $prefix.$letter;
             }
         }
@@ -169,12 +211,20 @@ class TrieManager
         return $response;
     }
 
-    protected function purify(string $string) : string
+    /**
+     * @param string $string
+     * @return string
+     */
+    protected function purify(string $string): string
     {
         return addslashes(trim(mb_strtolower($string)));
     }
 
-    public function save(string $location = 'triedb')
+    /**
+     * @param string $location
+     * @return void
+     */
+    public function save(string $location = 'triedb') : void
     {
         file_put_contents("$location", serialize($this));
     }
