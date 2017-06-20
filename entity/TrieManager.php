@@ -29,10 +29,14 @@ class TrieManager
     public function getNodeByPrefix(string $prefix) : array
     {
         $node = $this->trie;
-        for ($i=0; $i < strlen($prefix); $i++)
-        {
+        $prefix = $this->splitWord($prefix);
 
+        for ($i=0; $i < count($prefix); $i++)
+        {
+            $node = $node[$prefix[$i]];
         }
+        
+        return $node;
     }
 
     private function splitWord (string $word) : array
@@ -101,89 +105,68 @@ class TrieManager
         return $string;
     }
 
-    public function getValidChildren(array $node): array
+    
+    public function getValidChildren(string $prefix): array
     {
+        $node = $this->getNodeByPrefix($prefix);
         $response = [];
         foreach ($node as $letter => $subnode)
         {
-            if ($node['valid']) {
-                $response[] = $node;
+            if ($subnode['valid']) {
+//                $response[] = $subnode;
+                $response[] = $prefix.$letter;
             }
         }
 
         return $response;
+    }
+
+    public function hasChild($node, $child)
+    {
+
+        $child = $this->splitWord($child);
+        for ($i=0; $i < count($child); $i++)
+        {
+            
+            if (isset($node[$child[$i]]))
+            {
+                $node = $node[$child[$i]];
+            } else { return false;}
+
+            if ($i == count($child)-1 ) {
+
+                if ($node['valid']) {
+                    return true;
+                }
+            }
+
+        }
+
+        return false;
     }
 
     public function hasChildren(array $node):bool
     {
-        return count($node) > 2 ? true : false;
+        return count($node) > 1 ? true : false;
 
     }
 
-    public function getPotentiallyValidChildren(array $node): array
+    public function getPotentiallyValidChildren(string $prefix): array
     {
+        $node = $this->getNodeByPrefix($prefix);
+
         $response = [];
         foreach ($node as $letter => $subnode)
         {
-            if ($this->hasChildren($node)) {
-                $response[] = $node;
+            if ($letter == 'valid') { continue; }
+
+            if ($this->hasChildren($subnode)) {
+//                $response[$prefix.$letter] = $subnode;
+                $response[] = $prefix.$letter;
             }
         }
 
         return $response;
-
-    }
-
-    public function getAllChildren(array $node): array
-    {
-
-    }
-
-//    public function findNeighbours($word)
-//    {
-//        $arrayOfLetters = $this->splitWord($word);
-//        $currentNode = &$this->trie;
-//
-////        count($this->trie);exit;
-//        $candidates = [];
-//        $prefix ='';
-//
-//        for ($i = 0; $i< count($arrayOfLetters)-1; $i++){
-//        }
-//
-//        foreach ($currentNode as $letter => $node)
-//        {
-//            foreach ($node as $let => $nd){
-//
-//                if ($nd[$arrayOfLetters[2]][$arrayOfLetters[3]]) {
-//
-////                    $candidates[] = $prefix.$letter;
-//                    $candidates[] = $let;
-//                 }
-//            }
-//
-////            if ($node['valid'] === true) {
-////                $candidates[] = $prefix.$letter;
-////            }
-//        }
-//
-//        foreach ($candidates as $v)
-//        {echo $v;}
-////        echo count($candidates);
-//    }
-
-    public function getCurrentWord(array $arrayOfLetters) : string
-    {
-        $array = $arrayOfLetters;
-        $val = '';
-        if (is_array($array)){
-//            $val.= key()
-        }
-
-        for ($i = 0; $i < count($arrayOfLetters)-1; $i++)
-        {
-
-        }
     }
 
     protected function purify(string $string) : string

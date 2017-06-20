@@ -98,7 +98,7 @@ class Spellchecker
                 $tmpWord = implode($tmpWord);
                 if ($this->redis->exists($tmpWord)) {
                     $candidates[] = $tmpWord;
-                    $value = $tmpWord;
+//                    $value = $tmpWord;
                 }
             }
         }
@@ -143,30 +143,32 @@ class Spellchecker
                 $value = $this->splitWord($value);
 
 
-                $response = $this->distance1($value);
+               /* $response = $this->distance1($value);
                 if (!$response) {
                     $response = $this->distance2($value);
 
+                }*/
+
+                $response = $this->checkDeletions($value);
+
+                if (!$response) {
+                    $response = $this->checkInsertions($value);
                 }
 
-//                $response = $this->checkDeletions($value);
+                if (!$response) {
+                    $response = $this->checkTranspositions($value);
+                }
+
+
+                if (!$response) {
+                    $response = $this->checkSubstitutions($value);
+                }
 //
-//                if (!$response) {
-//                    $response = $this->checkInsertions($value);
-//                }
-//
-//                if (!$response) {
-//                    $response = $this->checkTranspositions($value);
-//                }
-//
-//
-//                if (!$response) {
-//                    $response = $this->checkSubstitutions($value);
-//                }
-//
-                
-                $response = $response ?? 'underline';
-    
+
+//                $response = $response ?? 'underline';
+
+                $response = isset($response) && !empty($response) ? $response :  'underline';
+
                 $this->response[] = ['id' => $array['id'], 'value' => $response, 'time' => microtime(true) - $time];
             }
         }
